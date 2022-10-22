@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/script.js" defer></script>
+    <link rel="stylesheet" href="/styles.css" />
+    <title>Simple Library</title>
+  </head>
+  <body>
+    <header>
+      <h1>Simple Library</h1>
+    </header>
+    <aside>
+      <ul>
+        <li><a href="#"> Home Page</a></li>
+        <li><a href="#"> Add New Book</a></li>
+        <li><a href="#"> Read Books</a></li>
+        <li><a href="#"> Unread Books</a></li>
+        <li><a href="#"> Search Book</a></li>
+      </ul>
+    </aside>
+    <main class="content">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Year</th>
+            <th>Pages</th>
+            <th>Status</th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+    <footer>
+      Copyright ©
+      <script>
+        document.writeln(new Date().getFullYear());
+      </script>
+      Leuchtend
+    </footer>
+
+    <div class="form-add-book">
+      <span><img src="/assets/Images/close_icon_1.png" alt="" /></span>
+      <h2>Add New Book</h2>
+      <form id="form">
+        <input
+          type="text"
+          name="title"
+          id="title"
+          placeholder="Title"
+          required
+        />
+        <div class="error"></div>
+        <input
+          type="text"
+          name="author"
+          id="author"
+          placeholder="Author"
+          required
+        />
+        <input
+          type="text"
+          name="year"
+          id="year"
+          placeholder="Year"
+          required
+          pattern="\d+"
+        />
+        <input
+          type="text"
+          name="page"
+          id="pages"
+          placeholder="Pages"
+          required
+          pattern="\d+"
+        />
+        <div class="isread">
+          <label for="read">Have you read it</label>
+          <input type="checkbox" name="read" id="read" />
+        </div>
+      </form>
+      <button type="submit" form="form" id="submit">Submit</button>
+    </div>
+    <div class="blur-bg"></div>
+  </body>
+</html>
