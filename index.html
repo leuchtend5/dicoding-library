@@ -10,9 +10,10 @@
   </head>
   <body>
     <header>
-      <h1>Simple Library</h1>
-    </header>
-    <aside>
+      <div class="main-menu">
+        <img src="/assets/Images/Hamburger_icon.png" alt="" />
+        <h2>Main Menu</h2>
+      </div>
       <ul>
         <li><a href="#"> Home Page</a></li>
         <li><a href="#"> Add New Book</a></li>
@@ -20,8 +21,17 @@
         <li><a href="#"> Unread Books</a></li>
         <li><a href="#"> Search Book</a></li>
       </ul>
-    </aside>
+    </header>
+    <div class="web-title">
+      <h1>Simple Library</h1>
+    </div>
+
     <main class="content">
+      <div class="search-container">
+        <label for="search">Book Title</label>
+        <input type="search" class="search" />
+        <button class="search-btn">Search</button>
+      </div>
       <table>
         <thead>
           <tr>
@@ -30,7 +40,7 @@
             <th>Year</th>
             <th>Pages</th>
             <th>Status</th>
-            <th>&nbsp;</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody></tbody>

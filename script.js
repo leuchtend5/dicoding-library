@@ -2,13 +2,22 @@
   let allBook = [];
 
   const tableBody = document.querySelector("tbody");
+
+  // SEARCH FUNCTION
   const content = document.getElementsByClassName("content");
   const searchBook = document.querySelector("li:nth-child(5)");
+  const searchContent = document.getElementsByClassName("search-container");
+
+  searchBook.addEventListener("click", () => {
+    searchContent[0].classList.add("active");
+  });
 
   // HOME PAGE TO SHOW ALL THE BOOK
   const home = document.querySelector("li:nth-child(1)");
 
   home.addEventListener("click", () => {
+    searchContent[0].classList.remove("active");
+
     while (tableBody.firstElementChild) {
       tableBody.firstElementChild.remove();
     }
@@ -64,6 +73,7 @@
   }
 
   addBookMenu.addEventListener("click", () => {
+    searchContent[0].classList.remove("active");
     blurBg[0].classList.add("active");
     formAdd[0].classList.add("active");
     inputTitle.value = "";
@@ -147,6 +157,7 @@
   const readBook = document.querySelector("li:nth-child(3)");
 
   readBook.addEventListener("click", () => {
+    searchContent[0].classList.remove("active");
     while (tableBody.firstElementChild) {
       tableBody.firstElementChild.remove();
     }
@@ -160,6 +171,7 @@
   const unreadBook = document.querySelector("li:nth-child(4)");
 
   unreadBook.addEventListener("click", () => {
+    searchContent[0].classList.remove("active");
     while (tableBody.firstElementChild) {
       tableBody.firstElementChild.remove();
     }

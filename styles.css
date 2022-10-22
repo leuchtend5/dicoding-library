@@ -16,25 +16,39 @@ body {
   font-family: light-font;
 }
 
-header {
-  grid-column: span 2;
+.web-title {
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #e5e7eb;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 5px;
-  z-index: 1;
 }
 
-aside {
+header {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   background-color: whitesmoke;
-  width: 150px;
+  grid-row: span 2;
+  z-index: 1;
+  padding-top: 20px;
+  font-size: 1.1rem;
+  gap: 15px;
+  min-width: 200px;
+}
+
+.main-menu {
+  display: flex;
+  gap: 10px;
+}
+
+.main-menu > img {
+  width: 20px;
 }
 
 ul {
   list-style: none;
+  text-align: center;
 }
 
 li {
@@ -63,6 +77,34 @@ a:visited {
   width: 100%;
 }
 
+.search-container {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  gap: 10px;
+}
+
+.search-container.active {
+  display: flex;
+}
+
+label {
+  font-size: 1.2rem;
+}
+
+.search:focus {
+  outline: none;
+}
+
+.search {
+  padding: 1px 5px;
+}
+
+.search-btn {
+  width: 70px;
+}
+
 table {
   margin: 30px auto;
   border-collapse: collapse;
@@ -83,10 +125,11 @@ td {
 }
 
 footer {
-  grid-column: span 2;
-  background-color: gray;
+  /* grid-column: span 2; */
+  background-color: whitesmoke;
   text-align: center;
   padding: 10px 0px;
+  font-size: 0.9rem;
 }
 
 .blur-bg {
@@ -152,7 +195,7 @@ h2 {
   width: 85%;
 }
 
-input {
+#form input {
   height: 40px;
   padding: 0px 10px;
   border: none;
@@ -160,11 +203,11 @@ input {
   font-size: 1.2rem;
 }
 
-input:focus::placeholder {
+#form input:focus::placeholder {
   color: transparent;
 }
 
-input:focus {
+#form input:focus {
   outline: none;
 }
 
