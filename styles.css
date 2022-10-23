@@ -105,6 +105,11 @@ label {
   width: 70px;
 }
 
+.not-found-text {
+  text-align: center;
+  font-size: 1.3rem;
+}
+
 table {
   margin: 30px auto;
   border-collapse: collapse;

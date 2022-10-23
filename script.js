@@ -1,28 +1,77 @@
 (() => {
   let allBook = [];
 
-  const tableBody = document.querySelector("tbody");
+  let menuClicked = {
+    home: false,
+    read: false,
+    unread: false,
+    search: false,
+  };
 
-  // SEARCH FUNCTION
-  const content = document.getElementsByClassName("content");
-  const searchBook = document.querySelector("li:nth-child(5)");
-  const searchContent = document.getElementsByClassName("search-container");
-
-  searchBook.addEventListener("click", () => {
-    searchContent[0].classList.add("active");
-  });
-
-  // HOME PAGE TO SHOW ALL THE BOOK
-  const home = document.querySelector("li:nth-child(1)");
-
-  home.addEventListener("click", () => {
-    searchContent[0].classList.remove("active");
-
+  function resetTable() {
     while (tableBody.firstElementChild) {
       tableBody.firstElementChild.remove();
     }
+  }
 
+  function loopAllBook() {
     allBook.forEach((book) => showBook(book));
+  }
+
+  const tableBody = document.querySelector("tbody");
+
+  // SEARCH FUNCTION
+  const searchMenu = document.querySelector("li:nth-child(5)");
+  const searchContent = document.getElementsByClassName("search-container");
+  const searchInput = document.getElementsByClassName("search");
+  const searchButton = document.getElementsByClassName("search-btn");
+  const notFoundText = document.getElementsByClassName("not-found-text");
+
+  function searchFunction(userInput) {
+    const searchResult = allBook.filter((book) =>
+      book.title.toLowerCase().includes(userInput.toLowerCase())
+    );
+    if (searchResult.length == 0) {
+      notFoundText[0].textContent = "Not Found";
+    } else {
+      notFoundText[0].textContent = "";
+      searchResult.forEach((book) => showBook(book));
+    }
+  }
+
+  searchButton[0].addEventListener("click", () => {
+    resetTable();
+    searchFunction(searchInput[0].value);
+  });
+
+  searchMenu.addEventListener("click", () => {
+    searchContent[0].classList.add("active");
+    searchInput[0].value = "";
+    menuClicked = {
+      home: false,
+      read: false,
+      unread: false,
+      search: true,
+    };
+    localStorage.setItem("menu clicked", JSON.stringify(menuClicked));
+    resetTable();
+  });
+
+  // HOME PAGE TO SHOW ALL THE BOOK
+  const homeMenu = document.querySelector("li:nth-child(1)");
+
+  homeMenu.addEventListener("click", () => {
+    searchContent[0].classList.remove("active");
+    menuClicked = {
+      home: true,
+      read: false,
+      unread: false,
+      search: false,
+    };
+    localStorage.setItem("menu clicked", JSON.stringify(menuClicked));
+
+    resetTable();
+    loopAllBook();
   });
 
   // CLOSE FORM BUTTON FUNCTION
@@ -63,28 +112,36 @@
 
     if (checkSameBook(newBook)) {
       errorText[0].textContent = "This book already in your library";
+      return;
     } else {
+      showBook(newBook);
       allBook.push(newBook);
+      setLocalStorage();
       blurBg[0].classList.remove("active");
       formAdd[0].classList.remove("active");
     }
-
-    showBook(newBook);
   }
 
   addBookMenu.addEventListener("click", () => {
-    searchContent[0].classList.remove("active");
     blurBg[0].classList.add("active");
     formAdd[0].classList.add("active");
     inputTitle.value = "";
     inputAuthor.value = "";
     inputYear.value = "";
     inputPages.value = "";
-    inputRead.value = "";
+    inputRead.checked = false;
+    errorText[0].textContent = "";
   });
 
   inputForm.addEventListener("submit", (e) => {
     addNewBook();
+    menuClicked = {
+      home: true,
+      read: false,
+      unread: false,
+      search: false,
+    };
+    document.dispatchEvent(new Event("changeData"));
     e.preventDefault();
   });
 
@@ -129,55 +186,112 @@
 
     isReadButton.addEventListener("click", () => {
       if (newBook.isRead == false) {
-        isReadButton.textContent = "Read";
-        isReadButton.style.backgroundColor = "#74ba61";
         newBook.isRead = true;
+        setLocalStorage();
+        document.dispatchEvent(new Event("changeData"));
       } else {
-        isReadButton.textContent = "Not Read";
-        isReadButton.style.backgroundColor = "";
         newBook.isRead = false;
+        setLocalStorage();
+        document.dispatchEvent(new Event("changeData"));
       }
     });
 
     deleteButton.addEventListener("click", () => {
-      removeBook(newBook.title);
-      newRow.remove();
+      if (confirm("are you sure to remove this book ?")) {
+        removeBook(newBook.title);
+        newRow.remove();
+      }
     });
   }
 
   // REMOVE FUNCTION TO REMOVE THE SELECTED BOOK FROM LIBRARY AND TABLE
   function removeBook(newBookTitle) {
-    return allBook.splice(
-      allBook.findIndex((book) => book === newBookTitle),
+    allBook.splice(
+      allBook.findIndex((book) => book.title === newBookTitle),
       1
     );
+    setLocalStorage();
   }
 
   // TO SHOW ONLY THE READ BOOKS
-  const readBook = document.querySelector("li:nth-child(3)");
+  const readMenu = document.querySelector("li:nth-child(3)");
 
-  readBook.addEventListener("click", () => {
-    searchContent[0].classList.remove("active");
-    while (tableBody.firstElementChild) {
-      tableBody.firstElementChild.remove();
-    }
-
+  function readBookFunction() {
     const readBookFilter = allBook.filter((book) => book.isRead == true);
-
     readBookFilter.forEach((book) => showBook(book));
+  }
+
+  readMenu.addEventListener("click", () => {
+    searchContent[0].classList.remove("active");
+    menuClicked = {
+      home: false,
+      read: true,
+      unread: false,
+      search: false,
+    };
+    localStorage.setItem("menu clicked", JSON.stringify(menuClicked));
+
+    resetTable();
+    readBookFunction();
   });
 
   // TO SHOW ONLY UNREAD BOOKS
-  const unreadBook = document.querySelector("li:nth-child(4)");
+  const unreadMenu = document.querySelector("li:nth-child(4)");
 
-  unreadBook.addEventListener("click", () => {
-    searchContent[0].classList.remove("active");
-    while (tableBody.firstElementChild) {
-      tableBody.firstElementChild.remove();
-    }
-
+  function unreadBookFunction() {
     const unreadBookFilter = allBook.filter((book) => book.isRead == false);
-
     unreadBookFilter.forEach((book) => showBook(book));
+  }
+
+  unreadMenu.addEventListener("click", () => {
+    searchContent[0].classList.remove("active");
+    menuClicked = {
+      home: false,
+      read: false,
+      unread: true,
+      search: false,
+    };
+    localStorage.setItem("menu clicked", JSON.stringify(menuClicked));
+
+    resetTable();
+    unreadBookFunction();
+  });
+
+  // SET AND GET ITEM FROM LOCAL STORAGE
+  function setLocalStorage() {
+    localStorage.setItem("all books", JSON.stringify(allBook));
+  }
+
+  function getLocalStorage() {
+    if (localStorage.getItem("all books")) {
+      allBook = JSON.parse(localStorage.getItem("all books"));
+    } else {
+      allBook = [];
+    }
+  }
+
+  function showCurrentData() {
+    getLocalStorage();
+    let getMenuClicked = JSON.parse(localStorage.getItem("menu clicked"));
+    if (getMenuClicked.home) {
+      resetTable();
+      loopAllBook();
+    } else if (getMenuClicked.read) {
+      resetTable();
+      readBookFunction();
+    } else if (getMenuClicked.search) {
+      resetTable();
+      searchFunction(searchInput[0].value);
+      searchContent[0].classList.add("active");
+    } else {
+      resetTable();
+      unreadBookFunction();
+    }
+  }
+
+  // KEEP THE CURRENT ACTIVE PAGE WHEN USER REFRESH THE PAGE
+  window.addEventListener("load", () => {
+    document.addEventListener("changeData", showCurrentData);
+    document.dispatchEvent(new Event("changeData"));
   });
 })();
