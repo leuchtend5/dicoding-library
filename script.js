@@ -98,7 +98,9 @@
 
   // CHECKING IF THE NEW BOOK IS ALREADY IN THE LIBRARY
   function checkSameBook(newBook) {
-    return allBook.some((book) => book.title === newBook.title);
+    return allBook.some(
+      (book) => book.title.toLowerCase() === newBook.title.toLowerCase()
+    );
   }
 
   // ADD NEW BOOK FUNCTION
