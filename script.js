@@ -1,13 +1,6 @@
 (() => {
   let allBook = [];
 
-  let menuClicked = {
-    home: false,
-    read: false,
-    unread: false,
-    search: false,
-  };
-
   function resetTable() {
     while (tableBody.firstElementChild) {
       tableBody.firstElementChild.remove();
@@ -19,6 +12,14 @@
   }
 
   const tableBody = document.querySelector("tbody");
+
+  // CHECKING CURRENT ACTIVE PAGE
+  let menuClicked = {
+    home: false,
+    read: false,
+    unread: false,
+    search: false,
+  };
 
   // SEARCH FUNCTION
   const searchMenu = document.querySelector("li:nth-child(5)");
@@ -46,6 +47,11 @@
 
   searchMenu.addEventListener("click", () => {
     searchContent[0].classList.add("active");
+    homeMenu.classList.remove("active");
+    readMenu.classList.remove("active");
+    unreadMenu.classList.remove("active");
+    searchMenu.classList.add("active");
+
     searchInput[0].value = "";
     menuClicked = {
       home: false,
@@ -57,11 +63,16 @@
     resetTable();
   });
 
-  // HOME PAGE TO SHOW ALL THE BOOK
+  // SHOW ALL THE BOOK ON HOME PAGE
   const homeMenu = document.querySelector("li:nth-child(1)");
 
   homeMenu.addEventListener("click", () => {
     searchContent[0].classList.remove("active");
+    homeMenu.classList.add("active");
+    readMenu.classList.remove("active");
+    unreadMenu.classList.remove("active");
+    searchMenu.classList.remove("active");
+
     menuClicked = {
       home: true,
       read: false,
@@ -135,12 +146,6 @@
 
   inputForm.addEventListener("submit", (e) => {
     addNewBook();
-    menuClicked = {
-      home: true,
-      read: false,
-      unread: false,
-      search: false,
-    };
     document.dispatchEvent(new Event("changeData"));
     e.preventDefault();
   });
@@ -223,6 +228,11 @@
 
   readMenu.addEventListener("click", () => {
     searchContent[0].classList.remove("active");
+    homeMenu.classList.remove("active");
+    readMenu.classList.add("active");
+    unreadMenu.classList.remove("active");
+    searchMenu.classList.remove("active");
+
     menuClicked = {
       home: false,
       read: true,
@@ -245,6 +255,11 @@
 
   unreadMenu.addEventListener("click", () => {
     searchContent[0].classList.remove("active");
+    homeMenu.classList.remove("active");
+    readMenu.classList.remove("active");
+    unreadMenu.classList.add("active");
+    searchMenu.classList.remove("active");
+
     menuClicked = {
       home: false,
       read: false,
